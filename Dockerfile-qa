@@ -1,0 +1,4 @@
+FROM tomcat:jdk11-corretto
+COPY target/ihi_admin-0.0.1-SNAPSHOT.jar  ihibackend.jar
+EXPOSE 6134
+CMD java -jar ihibackend.jar

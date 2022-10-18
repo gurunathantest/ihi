@@ -1,0 +1,54 @@
+pipeline {
+    agent any 
+    environment {
+        ENV = 'stage'
+        NAME = 'ihi_admin'
+        APP = 'stage-ihiadmin' 
+        IMAGE = 'icr.io/stage-ihi/stage-ihiadmin:latest'
+        FILE = 'ihi_admin/Dockerfile-qa'
+    }
+    stages {
+        stage('Maven Build Process') { 
+            steps {
+                sh 'mvn clean install -DskipTests -P${ENV} -f ${NAME}'
+            }
+        }
+        stage('Docker Build Process') { 
+            steps {
+                sh 'docker build --pull --rm -f "${FILE}" -t ${IMAGE} "${NAME}"'
+            }
+        }
+        stage('IBM Configure') { 
+            steps {
+                withCredentials([
+                    string(credentialsId: 'ibm-jiro-apikey', variable: 'KEY'),string(credentialsId: 'ibm-jiro-region', variable: 're'),
+                    string(credentialsId: 'ibm-jiro-account', variable: 'account'),string(credentialsId: 'ibm-jiro-ks', variable: 'ks'),
+                    [$class: 'UsernamePasswordMultiBinding', credentialsId:'ibm-jiro-login',usernameVariable: 'USER', passwordVariable: 'PASS']
+                    ]) { 
+                  sh '''ibmcloud login -u ${USER} -p ${PASS} -c ${account} -r ${re}
+                  ibmcloud login --apikey ${KEY} -r ${re} -g "Default"
+                  ibmcloud cr login
+                  ibmcloud cr region-set global
+                  ibmcloud ks cluster config -c ${ks}
+                  '''
+                }
+            }
+        }
+        stage('Docker Image Pushing Process') { 
+            steps {
+            sh '''ibmcloud cr image-rm ${IMAGE} || echo "image not in there"
+            docker push ${IMAGE} '''
+            }
+        }
+        stage('IBM Kubernetes Image Update Process') { 
+            steps {
+                sh 'kubectl set image deployment.apps/${APP} ${APP}=${IMAGE}'
+            }
+        }
+        stage('Cleaning Process') { 
+            steps {
+                deleteDir()
+            }
+        }
+    }
+}

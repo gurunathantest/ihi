@@ -2,3 +2,6 @@ FROM tomcat:jdk11-corretto
 COPY target/ihi_admin-0.0.1-SNAPSHOT.jar  ihibackend.jar
 EXPOSE 8137
 CMD java -jar ihibackend.jar
+
+
+

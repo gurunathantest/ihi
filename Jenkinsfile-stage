@@ -5,7 +5,7 @@ pipeline {
         NAME = 'ihi_admin'
         APP = 'stage-ihiadmin' 
         IMAGE = 'icr.io/stage-ihi/stage-ihiadmin:latest'
-        FILE = 'ihi_admin/Dockerfile-qa'
+        FILE = 'Dockerfile-qa'
     }
     stages {
         stage('Maven Build Process') { 

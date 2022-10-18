@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Docker Build Process') { 
             steps {
-                sh 'docker build --pull --rm -f "${FILE}" -t ${IMAGE} "${NAME}"'
+                sh 'docker build --pull --rm -f "${FILE}" -t ${IMAGE} '
             }
         }
         stage('IBM Configure') { 

@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Maven Build Process') { 
             steps {
-                sh 'mvn clean install -DskipTests -P${ENV} -f ${NAME}'
+                sh 'mvn clean install -DskipTests -P${ENV}'
             }
         }
         stage('Docker Build Process') { 

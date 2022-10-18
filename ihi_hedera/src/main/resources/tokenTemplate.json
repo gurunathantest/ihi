@@ -1,0 +1,11 @@
+{
+  "tokenName": "My NFT 0",
+  "metadata":{
+  "id": 0,
+  "description": "My NFT",
+  "external_url": "https://forum.sample.com/",
+  "image": "https://sample/svg/1f40e.svg",
+  "ownerName": "John Smith",
+  "coOwners": ["Abraham","George"]
+  }
+}

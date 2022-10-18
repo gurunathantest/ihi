@@ -1,0 +1,33 @@
+server:
+  port: 8127
+
+spring:
+  application:
+    name: service-monitor
+  security:
+    user:
+      name: "admin"
+      password: "1GuardGlobal!"
+  mail:
+    host: smtp.gmail.com
+    username: colaninfotestmail@gmail.com
+    password: Colan@123
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          socketFactory:
+            port: 25
+  boot:
+    admin:
+      notify:
+        mail:
+          enabled: true
+          to: vignesh@hederacoe.com, zulfihar@hederacoe.com, venkat@hederacoe.com
+          from: colaninfotestmail@gmail.com
+      ui:
+        public-url: http://localhost:8127

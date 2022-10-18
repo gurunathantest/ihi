@@ -1,0 +1,61 @@
+ server:
+   port: 8128
+
+ spring:
+   datasource:
+     url: jdbc:postgresql://158.175.101.27:5432/ihi_stage?createDatabaseIfNotExist=true&useSSL=false
+     username: ihiadmin
+     password: 8SecureIhi
+   application:
+     name: cloud-gateway
+   boot:
+     admin:
+       client:
+         url: [http://158.175.101.27:8127]
+         username: "admin"
+         password: "1GuardGlobal!"
+         instance:
+           prefer-ip: true
+   cloud:
+     loadbalancer:
+       ribbon:
+         enabled: false
+     gateway:
+       globalcors:
+         cors-configurations:
+           '[/**]':
+             allowedOrigins: "http://158.175.101.27,*"
+             allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
+       routes:
+         - id: ihi-auth
+           uri: http://158.175.101.27:8134
+           predicates:
+             - Path=/api/auth/**
+         - id: ihi-hcs
+           uri: http://158.175.101.27:8123
+           predicates:
+             - Path=/api/hcs/**
+         - id: ihi-hedera
+           uri: http://158.175.101.27:8136
+           predicates:
+             - Path=/api/hedera/**
+         - id: ihi-hedera
+           uri: http://158.175.101.27:8136
+           predicates:
+             - Path=/api/nft/**
+         - id: ihi-hts
+           uri: http://158.175.101.27:8135
+           predicates:
+             - Path=/api/hts/**
+ management:
+   security:
+     enabled: false
+   endpoints:
+     web:
+       exposure:
+         include: "*"
+   endpoint:
+     gateway:
+       enabled: true
+     health:
+       show-details: always

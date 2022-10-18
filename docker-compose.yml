@@ -1,0 +1,67 @@
+version: "3.3"
+services:     
+  auth:
+    build: ./ihi_auth
+    ports:
+      - 8134:8134
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  hedera:
+    build: ./ihi_hedera
+    ports:
+      - 8136:8136
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  hts:
+    build: ./ihi_hts
+    ports:
+      - 8135:8135
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  gateway:
+    build: ./ihi_cloud_gateway
+    ports:
+      - 8128:8128
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  monitor:
+    build: ./ihi_monitor
+    ports:
+      - 8127:8127
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  hcs:
+    build: ./ihi_hcs
+    ports:
+      - 8123:8123
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  admin:
+    build: ./ihi_admin
+    ports:
+      - 8137:8137
+    restart: on-failure
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+volumes:
+  db:

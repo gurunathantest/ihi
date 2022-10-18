@@ -1,0 +1,71 @@
+ server:
+   port: 8128
+
+ spring:
+   datasource:
+     url: jdbc:postgresql://localhost:5432/justpayme_web_dev?createDatabaseIfNotExist=true&useSSL=false
+     username: postgres
+     password: root
+   application:
+     name: cloud-gateway
+   boot:
+     admin:
+       client:
+         url: [http://localhost:8127]
+         username: "admin"
+         password: "1GuardGlobal!"
+   cloud:
+     loadbalancer:
+       ribbon:
+         enabled: false
+     gateway:
+       globalcors:
+         cors-configurations:
+           '[/**]':
+             allowedOrigins: "http://localhost,*"
+             allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
+       routes:
+         - id: justpayme-web-centralbank
+           uri: http://localhost:8131
+           predicates:
+             - Path=/api/centralbank**
+         - id: justpayme-web-auth
+           uri: http://localhost:8134
+           predicates:
+             - Path=/api/auth/**
+         - id: justpayme-web-commercialbank
+           uri: http://localhost:8133
+           predicates:
+             - Path=/api/commercialbank/**
+         - id: justpayme-web-customer
+           uri: http://localhost:8132
+           predicates:
+             - Path=/api/customer/**
+         - id: justpayme-web-merchant
+           uri: http://localhost:8137
+           predicates:
+             - Path=/api/merchant/**        
+         - id: justpayme_web-hcs
+           uri: http://localhost:8123
+           predicates:
+             - Path=/api/hcs/**
+         - id: justpayme_web-hedera
+           uri: http://localhost:8136
+           predicates:
+             - Path=/api/hedera/**
+         - id: justpayme_web-hts
+           uri: http://localhost:8135
+           predicates:
+             - Path=/api/hts/**
+ management:
+   security:
+     enabled: false
+   endpoints:
+     web:
+       exposure:
+         include: "*"
+   endpoint:
+     gateway:
+       enabled: true
+     health:
+       show-details: always

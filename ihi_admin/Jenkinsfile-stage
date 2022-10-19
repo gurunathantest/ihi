@@ -42,7 +42,7 @@ pipeline {
         }
         stage('IBM Kubernetes Image Update Process') { 
             steps {
-                sh 'kubectl set image deployment.apps/${APP} ${APP}=${IMAGE}'
+                sh 'kubectl set image deployment.apps/${APP} ${APP}=${IMAGE} -n ${ENV}'
             }
         }
         stage('Cleaning Process') { 
